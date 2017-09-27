@@ -27,9 +27,9 @@ tagged with <strong>{{ page.tag }}</strong>:
 
 <ul>
   {% for t_module_page in tagged_module_pages %}
-  <li>{{ t_module_page.module.name }} module</li>
+  <li><a href="{{ site.baseurl }}{{ t_module_page.url }}">{{ t_module_page.module.name }}</a> module</li>
   {% endfor %}
   {% for t_post in tagged_posts %}
-  <li>{{ t_post.title }}</li>
+  <li><a href="{{ site.baseurl }}{{ t_post.url }}">{{ t_post.title }}</a></li>
   {% endfor %}
 </ul>
