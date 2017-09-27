@@ -1,0 +1,8 @@
+{% unless site.tags.size %}
+	{% for post in site.posts %}
+		{% if post.tags.size %}
+			{% assign site.tags = site.tags | concat: post.tags | sort | uniq %}
+		{% endif %}
+	{% endfor %}
+{% endunless %}
+

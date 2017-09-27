@@ -44,7 +44,12 @@ collections:
   modules:
     output: true
     permalink: /:collection/:path/
+  tags:
+    output: true
+    permalink: /:collection/:path/
 
 relative_links:
   enabled:     false
   collections: true
+
+tags: []

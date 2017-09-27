@@ -1,0 +1,56 @@
+<div itemscope itemtype="http://schema.org/Product">
+	{% assign module = include.module %}
+	<h1 itemprop="name">{{ module.name }}</h1>
+	<img style="height: 50vh" itemprop="image" src="{{ module.image }}" alt='{{ module.name }}' />
+	<div itemprop="description">
+		<strong>{{ module.name }}</strong> is a {{module.electrical.Imax}}
+		{% for subclass in module.subclasses %}
+		{{ subclass }}
+		{% endfor %}
+		converter with {{module.electrical.Vout}} output.
+	</div>
+	<!-- datasheets.length, iterate -->
+	{% if module.datasheets.size %}
+	Datasheets:
+	<ul>
+		{% for datasheet in module.datasheets %}
+		<li><a href="{{ datasheet[1].link }}">{{ datasheet[0] }}</a></li>
+		{% endfor %}
+	</ul>
+	{% endif %}
+	{% if module.fritzing %}
+	<a href="{{module.fritzing}}">fritzing module</a>
+	{% endif %}
+
+	<!--
+<div itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+Rated <span itemprop="ratingValue">3.5</span>/5
+based on <span itemprop="reviewCount">11</span> customer reviews
+</div>
+-->
+	<!--price is 1000, a number, with locale-specific thousands separator
+and decimal mark, and the $ character is marked up with the
+machine-readable code "USD" -->
+	<!--
+<div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+<span itemprop="priceCurrency" content="USD">$</span
+><span itemprop="price" content="1000.00">1,000.00</span>
+<link itemprop="availability" href="http://schema.org/InStock" />In stock
+</div>
+-->
+	<!--
+Customer reviews:
+<div itemprop="review" itemscope itemtype="http://schema.org/Review">
+<span itemprop="name">Not a happy camper</span> -
+by <span itemprop="author">Ellie</span>,
+<meta itemprop="datePublished" content="2011-04-01">April 1, 2011
+<div itemprop="reviewRating" itemscope itemtype="http://schema.org/Rating">
+<meta itemprop="worstRating" content = "1">
+<span itemprop="ratingValue">1</span>/
+<span itemprop="bestRating">5</span>stars
+</div>
+<span itemprop="description">The lamp burned out and now I have to replace
+it. </span>
+</div>
+-->
+</div>

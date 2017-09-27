@@ -1,0 +1,35 @@
+{% unless page.tagged.modules.size > 0 %}
+  {% assign tagged_module_pages = page.tagged.modules %}
+  {% for module_page in site.modules %}
+    {% if module_page.tags contains page.tag %}
+      {% assign tagged_module_pages = tagged_module_pages | push: module_page %}
+    {% endif %}
+  {% endfor %}
+{% endunless %}
+
+{% unless page.tagged.posts.size > 0 %}
+  {% assign tagged_posts = page.tagged.posts %}
+  {% for post_page in site.posts %}
+    {% if post_page.tags contains page.tag %}
+      {% assign tagged_posts = tagged_module_pages | push: post_page %}
+    {% endif %}
+  {% endfor %}
+{% endunless %}
+
+<!-- we shouldn't have such page if no tag exists -->
+{% if tagged_module_pages.size > 0 %}
+{{ tagged_module_pages.size }} modules
+{% endif %}
+{% if tagged_posts.size > 0 %}
+{{ tagged_posts.size }} posts
+{% endif %}
+tagged with <strong>{{ page.tag }}</strong>:
+
+<ul>
+  {% for t_module_page in tagged_module_pages %}
+  <li>{{ t_module_page.module.name }} module</li>
+  {% endfor %}
+  {% for t_post in tagged_posts %}
+  <li>{{ t_post.title }}</li>
+  {% endfor %}
+</ul>
