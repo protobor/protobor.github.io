@@ -1,5 +1,6 @@
 ---
 tags: [mp2307, dc-dc, step-down]
+layout: module
 # scopes:
 module:
   name: mini-360
@@ -26,7 +27,7 @@ module:
 ---
 
 
-{% include modules/dc-dc.html module=page.module %}
+{% include modules/dc-dc.html %}
 
 <div>
 Please note, there is at least two versions of those modules, one with MP2307DN ic,

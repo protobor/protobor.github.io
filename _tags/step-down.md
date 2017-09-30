@@ -1,11 +1,8 @@
 ---
 tag: step-down
-tagged:
-  modules: []
-  posts: []
 ---
 
-{% include tag_page.html %}
+{% include tag_page_common.html %}
 
 {% assign category = category[0] %}
 {% if category %}

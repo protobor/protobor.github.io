@@ -1,14 +1,61 @@
 <div itemscope itemtype="http://schema.org/Product">
-	{% assign module = include.module %}
-	<h1 itemprop="name">{{ module.name }}</h1>
-	<img style="height: 50vh" itemprop="image" src="{{ module.image }}" alt='{{ module.name }}' />
-	<div itemprop="description">
-		<strong>{{ module.name }}</strong> is a {{module.electrical.Imax}}
-		{% for subclass in module.subclasses %}
-		{{ subclass }}
-		{% endfor %}
-		converter with {{module.electrical.Vout}} output.
+	{% assign module = page.module %}
+	{% assign tags = page.tags %}
+	<header class="major">
+		<div class="tags" style="float: right">{% for tag in tags %}<a href="#" class="button special small">{{ tag }}</a>{% endfor %}</div>
+		<h1 itemprop="name">{{ module.name }}</h1>
+	</header>
+	<div class="row">
+		<div class="6u 12u$(medium)">
+			<div itemprop="description">
+				<strong>{{ module.name }}</strong> is a {{module.electrical.Imax}}
+				{% for subclass in module.subclasses %}
+				{{ subclass }}
+				{% endfor %}
+				converter with {{module.electrical.Vout}} output.
+			</div>
+			<div>
+				<h2>Characteristics:</h2>
+				<table>
+					{% for e_param in module.electrical %}
+					<tr>
+						<td>{{ e_param[0] }}</td>
+						<td>{% if e_param[1].first %}{{ e_param[1][0] }} - {{e_param[1][1]}}{% else %}{{ e_param[1] }}{% endif %}</td>
+					</tr>
+					{% endfor %}
+					{% for m_param in module.mechanical %}
+					<tr>
+						<td>{{ m_param[0] }}</td>
+						<td>{{ m_param[1] }}</td>
+					</tr>
+					{% endfor %}
+				</table>
+			</div>
+		</div>
+		<div class="6u$ 12u$(medium)">
+			{% if module.image.first and module.image.size > 1 %}
+			<span class="image fit"><img src="assets/images/pic03.jpg" alt="" /></span>
+			<div class="box alt">
+				<div class="row 50% uniform">
+					<div class="4u"><span class="image fit"><img src="assets/images/pic08.jpg" alt="" /></span></div>
+					<div class="4u"><span class="image fit"><img src="assets/images/pic09.jpg" alt="" /></span></div>
+					<div class="4u$"><span class="image fit"><img src="assets/images/pic10.jpg" alt="" /></span></div>
+					<!-- Break -->
+					<div class="4u"><span class="image fit"><img src="assets/images/pic10.jpg" alt="" /></span></div>
+					<div class="4u"><span class="image fit"><img src="assets/images/pic08.jpg" alt="" /></span></div>
+					<div class="4u$"><span class="image fit"><img src="assets/images/pic09.jpg" alt="" /></span></div>
+					<!-- Break -->
+					<div class="4u"><span class="image fit"><img src="assets/images/pic09.jpg" alt="" /></span></div>
+					<div class="4u"><span class="image fit"><img src="assets/images/pic10.jpg" alt="" /></span></div>
+					<div class="4u$"><span class="image fit"><img src="assets/images/pic08.jpg" alt="" /></span></div>
+				</div>
+			</div>
+			{% else %}
+			<span class="image fit"><img itemprop="image" src="{{ module.image }}" alt='{{ module.name }}' /></span>
+			{% endif %}
+		</div>
 	</div>
+
 	<!-- datasheets.length, iterate -->
 	{% if module.datasheets.size %}
 	Datasheets:
