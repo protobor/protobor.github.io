@@ -15,10 +15,10 @@ there is an easy way. Read about [some](https://github.com/rubygems/rubygems/iss
 First of all, you’ll need to:
 
  * configure ruby to install gems into your home directory;
- * apply environment variable to avoid closing terminal;
+ * apply environment variable to avoid restarting terminal;
  * make sure ruby scripts from gems are executable after installation;
 
-```
+``` sh
 echo "export GEM_HOME=~/.gem" >>~/.profile
 export GEM_HOME=~/.gem
 echo "gem: --bindir /usr/local/bin" >>~/.gemrc
@@ -26,7 +26,7 @@ echo "gem: --bindir /usr/local/bin" >>~/.gemrc
 
 Then install `bundler`, software which allow you to install Jekyll dependencies.
 
-```
+``` sh
 gem install bundle
 ```
 
@@ -39,7 +39,7 @@ Bundler save project configuration into the same directory.
 Seems like latest version of nokogiri gem is not compatible with ruby 2.0,
 so you'll need to add `gem "nokogiri", "1.6.8.1"` to your `Gemfile`
 
-```
+``` sh
 bundle config --local path .bundle
 bundle config --local build.nokogiri --use-system-libraries
 bundle install --path vendor/bundle
@@ -47,8 +47,23 @@ bundle install --path vendor/bundle
 
 If installation finished without errors you probably can launch Jekyll now:
 
-```
+``` sh
 bundle exec jekyll s
+```
+
+One extra step allows you to have autoreload when site generated.
+You'll need to add hawkins plugin to your Gemfile:
+
+```
+group :jekyll_plugins do
+  gem 'hawkins'
+end
+```
+
+Now, the command `liveserve` can be used to have both watching and livereload.
+
+``` sh
+bundle exec jekyll liveserve
 ```
 
 ## Third party

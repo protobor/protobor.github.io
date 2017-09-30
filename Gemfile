@@ -3,5 +3,8 @@ source "https://rubygems.org"
 
 gemspec
 
-gem 'jekyll-relative-links'
-gem 'jekyll-gist'
+group :jekyll_plugins do
+  gem 'jekyll-relative-links'
+  gem 'jekyll-gist'
+  gem 'hawkins'
+end
