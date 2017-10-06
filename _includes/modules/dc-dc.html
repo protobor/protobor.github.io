@@ -1,6 +1,11 @@
 <div itemscope itemtype="http://schema.org/Product">
 	{% assign module = page.module %}
 	{% assign tags = page.tags %}
+	{% if module.datasheets.size %}
+		{% assign datasheets = module.datasheets %}
+	{% else %}
+		{% assign datasheets = "" | split: "" %}
+	{% endif %}
 	<header class="major">
 		<div class="tags" style="float: right">{% for tag in tags %}<a href="#" class="button special small">{{ tag }}</a>{% endfor %}</div>
 		<h1 itemprop="name">{{ module.name }}</h1>
@@ -8,22 +13,41 @@
 	<div class="row">
 		<div class="6u 12u$(medium)">
 			<div itemprop="description">
-				<strong>{{ module.name }}</strong> is a {{module.electrical.Imax}}
+				<strong>{{ module.name }}</strong> is a {{module.params.electrical.Imax}}
 				{% for subclass in module.subclasses %}
 				{{ subclass }}
 				{% endfor %}
-				converter with {{module.electrical.Vout}} output.
+				converter with {{module.params.electrical.Vout}} output.
 			</div>
 			<div>
 				<h2>Characteristics:</h2>
 				<table>
-					{% for e_param in module.electrical %}
+					{% for e_param in module.params.electrical %}
+					{% assign e_key = e_param[0] %}
 					<tr>
-						<td>{{ e_param[0] }}</td>
-						<td>{% if e_param[1].first %}{{ e_param[1][0] }} - {{e_param[1][1]}}{% else %}{{ e_param[1] }}{% endif %}</td>
+						<td>{{ e_key }}</td>
+						<td>
+							{% if e_param[1].copy_from %}
+								{% assign cmp_name    = e_param[1].copy_from %}
+								{% assign cmp_prefix  = e_param[1].copy_from | slice: 0, 2 %}
+								{% assign cmp_postfix = e_param[1].copy_from | slice: 2, 255 %}
+								{% assign val = site.data.components[cmp_prefix][cmp_postfix][e_key] %}
+								{% if site.data.components[cmp_prefix][cmp_postfix].datasheet %}
+									{% assign datasheets = datasheets | push: cmp_name %}
+								{% endif %}
+							{% else %}
+								{% assign val = e_param[1] %}
+							{% endif %}
+
+							{% if val.first %}
+								{{ val[0] }} - {{ val[1] }}
+							{% else %}
+								{{ val }}
+							{% endif %}
+						</td>
 					</tr>
 					{% endfor %}
-					{% for m_param in module.mechanical %}
+					{% for m_param in module.params.mechanical %}
 					<tr>
 						<td>{{ m_param[0] }}</td>
 						<td>{{ m_param[1] }}</td>
@@ -33,7 +57,7 @@
 			</div>
 		</div>
 		<div class="6u$ 12u$(medium)">
-			{% if module.image.first and module.image.size > 1 %}
+			{% if module.media.pictures.first and module.media.pictures.size > 1 %}
 			<span class="image fit"><img src="assets/images/pic03.jpg" alt="" /></span>
 			<div class="box alt">
 				<div class="row 50% uniform">
@@ -51,21 +75,27 @@
 				</div>
 			</div>
 			{% else %}
-			<span class="image fit"><img itemprop="image" src="{{ module.image }}" alt='{{ module.name }}' /></span>
+			<span class="image fit"><img itemprop="image" src="{{ module.media.pictures }}" alt='{{ module.name }}' /></span>
 			{% endif %}
 		</div>
 	</div>
 
 	<!-- datasheets.length, iterate -->
-	{% if module.datasheets.size %}
+	{% if datasheets.size %}
+	{% assign datasheets = datasheets | uniq %}
 	Datasheets:
 	<ul>
-		{% for datasheet in module.datasheets %}
-		<li><a href="{{ datasheet[1].link }}">{{ datasheet[0] }}</a></li>
+		{% for cmp_name in datasheets %}
+		{% assign cmp_prefix  = cmp_name | slice: 0, 2 %}
+		{% assign cmp_postfix = cmp_name | slice: 2, 255 %}
+		{% assign cmp = site.data.components[cmp_prefix][cmp_postfix] %}
+		{% assign datasheet_file = cmp.datasheet %}
+
+		<li><a href="{{ datasheet_file }}">{% if cmp.name %}{{ cmp.name }} {{ cmp.description }}{% else %}{{ cmp_name }}{% endif %}</a></li>
 		{% endfor %}
 	</ul>
 	{% endif %}
-	{% if module.fritzing %}
+	{% if module.media.fritzing %}
 	<a href="{{module.fritzing}}">fritzing module</a>
 	{% endif %}
 

@@ -1,0 +1,8 @@
+{
+   "Vref": 0.925,
+   "Vin": [4.75, 18],
+   "Fosc": 340000,
+   "name": "MP2307",
+   "description": "synchronous rectified step-down converter",
+   "datasheet": "mp2308.pdf"
+}
