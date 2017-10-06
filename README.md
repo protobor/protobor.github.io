@@ -42,7 +42,7 @@ so you'll need to add `gem "nokogiri", "1.6.8.1"` to your `Gemfile`
 ``` sh
 bundle config --local path .bundle
 bundle config --local build.nokogiri --use-system-libraries
-bundle install --path vendor/bundle
+bundle install --path .bundle
 ```
 
 If installation finished without errors you probably can launch Jekyll now:
